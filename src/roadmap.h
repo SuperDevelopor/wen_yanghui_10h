@@ -11,12 +11,13 @@ class Point
 {
 public:
     int x, y;
+    float yaw;
 };
 
 class Node : public Point
 {
 public:
-    float yaw, radius;
+    float radius;
     vector<Node *> adjacent;
     Node()
     {
