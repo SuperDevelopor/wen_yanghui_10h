@@ -8,7 +8,7 @@ SampleAgent::SampleAgent(string &serial_id, Point &start)
     current_pose_.theta = start.yaw;
 
     publisher_ = nh_.advertise<multi_agent_planner::Agent>("agent_feedback", 10);
-    viewer_ = nh_.advertise<nav_msgs::Path>("path_view", 10);
+    viewer_ = nh_.advertise<nav_msgs::Path>(serial_id + "/path_view", 10);
     service_ = nh_.advertiseService(serial_id + "/update_goal", &SampleAgent::update_goal, this);
     cilent_ = nh_.serviceClient<multi_agent_planner::AgentSrv>("get_plan");
 }
@@ -16,10 +16,16 @@ SampleAgent::SampleAgent(string &serial_id, Point &start)
 bool SampleAgent::update_goal(multi_agent_planner::AgentSrvRequest &goal,
                               multi_agent_planner::AgentSrvResponse &res)
 {
+    ROS_INFO("recieved a goal plan.");
+    if (goal.x > SQURE || goal.x < 0 || goal.y > SQURE || goal.y < 0) {
+        ROS_ERROR("invalid goal!!");
+        return false;
+    }
+
     multi_agent_planner::AgentSrv srv;
     srv.request = goal;
     if (cilent_.call(srv)) {
-        viewer_.publish(srv.response);
+        viewer_.publish(srv.response.path);
         res = srv.response;
     } else {
         ROS_ERROR("Failed to call service 'get_plan'");

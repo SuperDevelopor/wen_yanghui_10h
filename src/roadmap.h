@@ -7,6 +7,7 @@
 
 using namespace std;
 
+#define SQURE 11
 class Point
 {
 public:
@@ -17,13 +18,17 @@ public:
 class Node : public Point
 {
 public:
-    float radius;
     vector<Node *> adjacent;
-    Node()
+    bool isAdjoin(const int x, const int y)
     {
-        yaw = 0;
-        radius = 0.45f;
+        for (int i = 0; i < adjacent.size(); i++) {
+            if ((adjacent[i]->x == x) && (adjacent[i]->y == y)) {
+                return (true);
+            }
+        }
+        return (false);
     }
+    Node() { yaw = 0; }
 };
 
 class RoadMap

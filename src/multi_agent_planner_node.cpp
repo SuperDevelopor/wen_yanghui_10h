@@ -4,8 +4,8 @@
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "planner");
-    std::cout << "hello multi-agent" << std::endl;
+    std::cout << "multi-agent planner running" << std::endl;
     Planner *planner = new Planner();
-    ros::spin();
+    planner->run();
     return (0);
 }
