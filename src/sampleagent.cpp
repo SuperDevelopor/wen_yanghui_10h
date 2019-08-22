@@ -16,6 +16,7 @@ SampleAgent::SampleAgent(string &serial_id, Point &start)
 bool SampleAgent::update_goal(multi_agent_planner::AgentSrvRequest &goal,
                               multi_agent_planner::AgentSrvResponse &res)
 {
+    //error check
     ROS_INFO("recieved a goal plan.");
     if (goal.x > SQURE || goal.x < 0 || goal.y > SQURE || goal.y < 0) {
         ROS_ERROR("invalid goal!!");
@@ -24,6 +25,7 @@ bool SampleAgent::update_goal(multi_agent_planner::AgentSrvRequest &goal,
 
     multi_agent_planner::AgentSrv srv;
     srv.request = goal;
+    srv.request.sreial_id = current_pose_.sreial_id;
     if (cilent_.call(srv)) {
         viewer_.publish(srv.response.path);
         res = srv.response;

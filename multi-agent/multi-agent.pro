@@ -18,5 +18,4 @@ SOURCES += \
 HEADERS += \
     ../src/planner.h \
     ../src/roadmap.h \
-    ../src/sampleagent.h \
-    ../src/testcase.h
+    ../src/sampleagent.h

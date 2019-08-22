@@ -118,9 +118,11 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/multi_agent_planner.cpp
-# )
+ add_library(${PROJECT_NAME}
+   src/planner.cpp 
+   src/sampleagent.cpp 
+   src/roadmap.cpp 
+ )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -194,10 +196,10 @@ add_executable(agent_node src/agent_node.cpp src/sampleagent.cpp)
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_multi_agent_planner.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+ catkin_add_gtest(${PROJECT_NAME}-test src/testcase.cpp)
+ if(TARGET ${PROJECT_NAME}-test)
+   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME} ${catkin_LIBRARIES})
+ endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

@@ -2,6 +2,7 @@
 
 RoadMap::RoadMap()
 {
+   //初始化地图
     Node nd;
     // adjacent_matrix_.resize(10 * 10);
     vector<Node> t;

@@ -1,0 +1,57 @@
+1.编译环境：
+    操作系统：ubuntu18.04
+    ROS版本： melodic
+    构建工具：catkin
+    C++版本： C++11
+    依赖关系：tf、geometry_msgs、Eigen、nav_msgs、std_msgs、roscpp
+
+    编译说明：将此功能包放到ros工作空间直接构建即可
+    catkin_make multi_agent_planner 
+2.文档说明：
+    msg: 消息文件
+    srv: 服务文件
+    src: 源码文件
+    rviz: rviz配置文件
+3.关于节点：
+    planner_node：规划器节点
+
+	提供/get_plan服务
+	订阅/agent_feedback话题
+
+    agent_node: 代理节点
+
+	发布当前位姿到/agent_feedback话题
+	发布/serial_id/path_view话题，消息类型为nav_msgs/Path,用rviz显示
+	提供/serial_id/update_goal服务
+
+
+	启动节点需要4个参数,eg:
+	rosrun multi_agent_planner agent_node serial_id x y theta
+        serial_id: 唯一标识此节点名称，同时启动多个节点时不能存在相同的serial_id
+	x,y,theta: 启动节点的初始位姿
+
+ 4.使用：
+    首先启动master和planner_node节点
+    roscore
+    rosrun multi_agent_planner planner_node：
+	
+    然后启动两个agent_node节点
+    rosrun multi_agent_planner agent_node agent_1 2 0 0 
+    rosrun multi_agent_planner agent_node agent_2 0 3 0 
+	
+    打开rviz,坐标系设置为map，添加两个Path查看器
+    分别订阅/agent_1/path_view和/agent_2/path_view
+
+    使用rqt_service_caller向/agent_1/update_goal发送 2 5 0
+    向/agent_2/update_goal发送  6 3 0
+	
+    结果显示在rviz中
+5.测试用例：
+   启动rviz并加载rviz/default.rviz文件，确保插件中有两个Path插件，坐标系设置为map,两个Path插件分别订阅/agent_1/path_view和agent_2/path_view
+   启动测试：
+	在工作空间目录下执行
+	catkin_make run_tests_multi_agent_planner
+	等待3s后结果显示在rviz中
+
+    
+
